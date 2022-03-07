@@ -1,15 +1,21 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div id="nav" v-if="isLoggedIn">
+    <router-link to="/">Login</router-link> |
+    <router-link to="/register">Register</router-link>
+  </div>
+  <router-view></router-view>
 </template>
-
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
 export default {
-  name: 'App',
-  components: {
-    HelloWorld
+  created() {
+    const result = this.$store.getters.getCredentials;
+    localStorage.setItem('username', result[0]);
+    localStorage.setItem('password', result[1]);
+  },
+  computed:{
+     isLoggedIn(){
+      return this.$store.getters.isLogged
+    }
   }
 }
 </script>
@@ -21,6 +27,18 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+}
+
+#nav {
+  padding: 30px;
+}
+
+#nav a {
+  font-weight: bold;
+  color: #2c3e50;
+}
+
+#nav a.router-link-exact-active {
+  color: #42b983;
 }
 </style>
